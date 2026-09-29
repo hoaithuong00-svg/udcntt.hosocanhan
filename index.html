@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nguyễn Ngọc Hoài Thương - Portfolio Sư phạm Khoa học Tự nhiên</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Quicksand & Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- QRCode.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- Canvas Confetti for Celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            scienceBlue: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              900: '#0c4a6e',
+            },
+            natureGreen: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#16a34a',
+              600: '#15803d',
+              700: '#166534',
+            }
+          },
+          fontFamily: {
+            sans: ['"Be Vietnam Pro"', 'sans-serif'],
+            heading: ['"Quicksand"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Nền hạt chuyển động nhẹ nhàng phong cách khoa học */
+    .sci-bg {
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(at 10% 20%, rgba(2, 132, 199, 0.08) 0px, transparent 50%),
+        radial-gradient(at 90% 10%, rgba(22, 163, 74, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 80%, rgba(56, 189, 248, 0.08) 0px, transparent 50%);
+    }
+
+    /* Tỉ lệ banner chuẩn 51.77 x 5.29 cm (~ 9.786 : 1) */
+    .banner-ratio-box {
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 51.77 / 5.29;
+      margin: 0 auto;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px solid rgba(2, 132, 199, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Hiệu ứng trôi nhẹ cho các hạt nguyên tử/phân tử trang trí */
+    @keyframes floatParticle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(8deg); }
+    }
+    .floating-elem {
+      animation: floatParticle 6s ease-in-out infinite;
+    }
+    .floating-elem-delayed {
+      animation: floatParticle 8s ease-in-out infinite 2s;
+    }
+
+    /* Khóa vùng hồ sơ */
+    .profile-locked {
+      filter: blur(10px);
+      pointer-events: none;
+      user-select: none;
+      transition: filter 0.8s ease;
+    }
+  </style>
+</head>
+<body class="sci-bg text-slate-800 antialiased font-sans">
+
+  <!-- ==================== BANNER ĐẦU TRANG ==================== -->
+  <header class="w-full bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200/80 px-4 py-2">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+      <!-- Khung chứa Banner kích thước tỉ lệ 51,77 x 5,29 cm -->
+      <div class="w-full flex-1">
+        <div class="banner-ratio-box group relative" title="Kích thước chuẩn tỉ lệ 51.77 x 5.29 cm">
+          <img id="bannerImage" 
+               src="Logo HCMUE - Gia tri cot loi 1.png" 
+               alt="Logo Trường Đại học Sư phạm TP. Hồ Chí Minh" 
+               class="w-full h-full object-contain p-1.5 transition-transform duration-300 group-hover:scale-[1.01]">
+          
+          <!-- Nút đổi banner nhanh cho chủ sở hữu -->
+          <label for="bannerInput" class="absolute bottom-1 right-2 bg-slate-900/70 hover:bg-slate-900 text-white text-[11px] px-2 py-0.5 rounded cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+            📷 Đổi Logo/Banner
+          </label>
+          <input type="file" id="bannerInput" accept="image/*" class="hidden" onchange="updateImage(this, 'bannerImage')">
+        </div>
+      </div>
+
+      <!-- Quick Nav -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
+        <a href="#welcome" class="hover:text-scienceBlue-600 transition-colors">Trang chủ</a>
+        <a href="#game1" class="hover:text-scienceBlue-600 transition-colors">Thử thách 01</a>
+        <a href="#game2" class="hover:text-scienceBlue-600 transition-colors">Thử thách 02</a>
+        <a href="#about" id="navAboutLink" class="text-slate-400 cursor-not-allowed">Hồ sơ cá nhân 🔒</a>
+        <a href="#contact" class="hover:text-natureGreen-600 transition-colors">Liên hệ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== 2. TRANG MỞ ĐẦU – HERO SECTION ==================== -->
+  <section id="welcome" class="relative min-h-[92vh] flex items-center justify-center px-4 py-16 overflow-hidden">
+    <!-- Icon khoa học chuyển động trang trí nền -->
+    <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-35">
+      <span class="floating-elem absolute top-12 left-10 text-4xl text-sky-400">⚛️</span>
+      <span class="floating-elem-delayed absolute top-1/4 right-16 text-3xl text-emerald-400">🧬</span>
+      <span class="floating-elem absolute bottom-24 left-1/4 text-4xl text-teal-400">🔬</span>
+      <span class="floating-elem-delayed absolute bottom-1/3 right-1/4 text-3xl text-indigo-300">🪐</span>
+      <span class="floating-elem absolute top-1/3 left-1/3 text-2xl text-green-300">🌿</span>
+      <span class="floating-elem-delayed absolute bottom-12 right-12 text-4xl text-cyan-400">🧪</span>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-scienceBlue-50 border border-scienceBlue-200 text-scienceBlue-700 text-sm font-semibold mb-6 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-scienceBlue-500 animate-pulse"></span>
+        Hành trình Khám phá Khoa học Tự nhiên
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-extrabold font-heading text-slate-900 tracking-tight leading-tight">
+        XIN CHÀO! MÌNH LÀ <span class="bg-gradient-to-r from-scienceBlue-600 to-natureGreen-600 bg-clip-text text-transparent">HOÀI THƯƠNG</span> 👋
+      </h1>
+
+      <p class="mt-4 text-xl sm:text-2xl font-medium text-scienceBlue-700">
+        Sinh viên Sư phạm Khoa học Tự nhiên
+      </p>
+
+      <blockquote class="mt-6 text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto italic font-light">
+        “Mình yêu khoa học, thích khám phá tự nhiên và luôn tò mò về những công nghệ mới.”
+      </blockquote>
+
+      <div class="mt-4 inline-block bg-white/80 backdrop-blur-sm border border-emerald-200 px-6 py-2 rounded-xl text-natureGreen-700 font-semibold shadow-sm">
+        🌱 Slogan: “Tò mò để khám phá – Học hỏi để trưởng thành.”
+      </div>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#game1" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-scienceBlue-600 to-natureGreen-600 hover:from-scienceBlue-700 hover:to-natureGreen-700 text-white font-bold text-lg rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+          <span>🔬 BẮT ĐẦU KHÁM PHÁ</span>
+          <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. TRÒ CHƠI 1 – THỬ THÁCH KHOA HỌC ==================== -->
+  <section id="game1" class="py-20 px-4 bg-gradient-to-b from-white to-scienceBlue-50/50">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-8">
+        <div class="inline-block px-3 py-1 bg-sky-100 text-scienceBlue-700 rounded-lg text-sm font-semibold mb-2">Thử thách 1 / 2</div>
+        <h2 class="text-3xl font-extrabold font-heading text-slate-800">
+          🔬 THỬ THÁCH 01: NHÀ KHOA HỌC NHÍ
+        </h2>
+        <p class="text-slate-600 mt-2 text-sm sm:text-base">Trắc nghiệm Khoa học Tự nhiên THCS cơ bản (Vật lí, Hóa học, Sinh học, Khoa học Trái Đất)</p>
+      </div>
+
+      <!-- Khung trò chơi 1 -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-sky-100">
+        <!-- Tiến trình -->
+        <div class="mb-6">
+          <div class="flex justify-between items-center text-sm font-semibold text-slate-600 mb-2">
+            <span id="g1-progress-text">Câu 1/5</span>
+            <span id="g1-topic-badge" class="px-2.5 py-0.5 rounded-full text-xs bg-slate-100 text-slate-700 font-medium">Khoa học Trái Đất</span>
+          </div>
+          <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+            <div id="g1-progress-bar" class="h-full bg-gradient-to-r from-scienceBlue-500 to-sky-400 transition-all duration-300" style="width: 20%"></div>
+          </div>
+        </div>
+
+        <!-- Vùng câu hỏi -->
+        <div id="g1-question-box" class="space-y-6">
+          <h3 id="g1-question" class="text-lg sm:text-xl font-bold text-slate-800 leading-relaxed min-h-[56px]">
+            <!-- Nội dung câu hỏi render ở JS -->
+          </h3>
+
+          <div id="g1-options" class="grid grid-cols-1 gap-3">
+            <!-- 4 Lựa chọn A B C D -->
+          </div>
+
+          <div id="g1-feedback" class="hidden p-4 rounded-xl text-center font-semibold text-sm transition-all duration-300"></div>
+        </div>
+
+        <!-- Thông báo hoàn thành Thử thách 1 -->
+        <div id="g1-completed" class="hidden text-center py-6 space-y-5">
+          <div class="text-5xl">🎉</div>
+          <h3 class="text-2xl font-bold text-emerald-600">CHÚC MỪNG! BẠN ĐÃ VƯỢT QUA THỬ THÁCH 01</h3>
+          <p class="text-slate-600">Bạn đã thể hiện sự hiểu biết khoa học rất cừ khôi. Hãy sẵn sàng cho thử thách tiếp theo!</p>
+          <a href="#game2" class="inline-flex items-center gap-2 px-8 py-3.5 bg-natureGreen-600 hover:bg-natureGreen-700 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all">
+            TIẾP TỤC THỬ THÁCH 02 →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. TRÒ CHƠI 2 – ĐÚNG HAY SAI? ==================== -->
+  <section id="game2" class="py-20 px-4 bg-gradient-to-b from-scienceBlue-50/50 to-emerald-50/40">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-8">
+        <div class="inline-block px-3 py-1 bg-emerald-100 text-natureGreen-700 rounded-lg text-sm font-semibold mb-2">Thử thách 2 / 2</div>
+        <h2 class="text-3xl font-extrabold font-heading text-slate-800">
+          ⚡ THỬ THÁCH 02: ĐÚNG HAY SAI?
+        </h2>
+        <p class="text-slate-600 mt-2 text-sm sm:text-base">Kiểm chứng các nhận định Khoa học Tự nhiên thú vị</p>
+      </div>
+
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-emerald-100">
+        <!-- Điểm & Tiến trình -->
+        <div class="flex justify-between items-center text-sm font-semibold text-slate-600 mb-6">
+          <span id="g2-progress-text">Nhận định 1/5</span>
+          <span id="g2-score-badge" class="px-3 py-1 rounded-full bg-amber-50 text-amber-600 font-bold border border-amber-200">
+            Điểm: <span id="g2-score">0</span>/5 ⭐
+          </span>
+        </div>
+
+        <div id="g2-content-box" class="space-y-6">
+          <div class="p-6 bg-slate-50 border border-slate-200/80 rounded-2xl">
+            <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2">Nhận định khoa học:</p>
+            <p id="g2-statement" class="text-lg sm:text-xl font-bold text-slate-800 italic">
+              <!-- Nhận định hiển thị tại đây -->
+            </p>
+          </div>
+
+          <!-- Nút chọn Đúng / Sai -->
+          <div id="g2-buttons" class="grid grid-cols-2 gap-4">
+            <button onclick="handleGame2Answer(true)" class="py-4 px-6 rounded-2xl font-bold text-lg text-emerald-700 bg-emerald-50 border-2 border-emerald-500 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center gap-2">
+              <span>✅</span> ĐÚNG
+            </button>
+            <button onclick="handleGame2Answer(false)" class="py-4 px-6 rounded-2xl font-bold text-lg text-rose-700 bg-rose-50 border-2 border-rose-500 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center gap-2">
+              <span>❌</span> SAI
+            </button>
+          </div>
+
+          <!-- Giải thích khoa học -->
+          <div id="g2-explanation-card" class="hidden p-4 rounded-2xl bg-sky-50 border border-sky-200 text-sky-900 text-sm">
+            <p class="font-bold mb-1" id="g2-result-tag"></p>
+            <p id="g2-explanation" class="leading-relaxed"></p>
+            <div class="mt-4 text-right">
+              <button id="g2-next-btn" onclick="nextGame2Question()" class="px-5 py-2 bg-scienceBlue-600 text-white rounded-xl font-semibold hover:bg-scienceBlue-700 text-xs sm:text-sm">
+                Câu tiếp theo ➔
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Màn hình hoàn thành & MỞ KHÓA HỒ SƠ -->
+        <div id="g2-completed" class="hidden text-center py-8 space-y-6">
+          <div class="text-6xl animate-bounce">🏆</div>
+          <h3 class="text-3xl font-extrabold text-slate-800">XUẤT SẮC!</h3>
+          <p class="text-slate-600 max-w-md mx-auto">
+            Bạn đã hoàn thành hành trình khám phá Khoa học Tự nhiên. Bạn đã sẵn sàng tìm hiểu về người bạn đồng hành này chưa?
+          </p>
+
+          <div class="pt-4">
+            <button onclick="unlockPortfolio()" class="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-amber-500 via-emerald-600 to-scienceBlue-600 text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-2xl hover:scale-105 hover:shadow-emerald-500/25 transition-all duration-300 animate-pulse">
+              <span>🔓 MỞ KHÓA HỒ SƠ CỦA MÌNH</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== KHU VỰC HỒ SƠ CÁ NHÂN (PROFILE) ==================== -->
+  <div id="portfolioProfile" class="profile-locked relative">
+    
+    <!-- Lớp phủ khi đang khóa -->
+    <div id="lockedOverlay" class="absolute inset-0 bg-slate-900/10 backdrop-blur-[6px] z-30 flex flex-col items-center justify-start pt-32">
+      <div class="bg-white/95 px-8 py-6 rounded-3xl shadow-2xl border border-slate-200 text-center max-w-md mx-4">
+        <span class="text-4xl block mb-2">🔒</span>
+        <h4 class="text-xl font-bold text-slate-800">Hồ sơ đang được bảo vệ!</h4>
+        <p class="text-slate-600 text-sm mt-2">Vui lòng hoàn thành 2 thử thách khoa học ở trên để mở khóa thông tin chi tiết.</p>
+        <div class="mt-4 flex gap-2 justify-center">
+          <a href="#game1" class="text-xs text-scienceBlue-600 font-semibold underline">Làm Thử thách 1</a>
+          <span class="text-xs text-slate-400">•</span>
+          <a href="#game2" class="text-xs text-natureGreen-600 font-semibold underline">Làm Thử thách 2</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. ABOUT ME – VỀ MÌNH -->
+    <section id="about" class="py-24 px-4 bg-white">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <span class="px-4 py-1.5 rounded-full bg-scienceBlue-100 text-scienceBlue-700 text-sm font-bold">Hồ sơ cá nhân</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 mt-2">👋 XIN CHÀO, ĐÂY LÀ MÌNH!</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <!-- Ảnh chân dung -->
+          <div class="lg:col-span-5 flex flex-col items-center">
+            <div class="relative group w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
+              <img id="avatarImage" 
+                   src="ChatGPT Image 01_23_25 16 thg 9, 2026.png" 
+                   alt="Chân dung Nguyễn Ngọc Hoài Thương" 
+                   class="w-full h-auto object-cover aspect-[4/5] transition-transform duration-500 group-hover:scale-105">
+              
+              <!-- Nút tải ảnh chân dung tùy chỉnh của chủ sở hữu -->
+              <label for="avatarInput" class="absolute bottom-3 right-3 bg-slate-900/80 hover:bg-slate-900 text-white text-xs px-3 py-1.5 rounded-xl cursor-pointer shadow-lg backdrop-blur-sm transition-all flex items-center gap-1.5 opacity-90 group-hover:opacity-100">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                <span>Đổi ảnh</span>
+              </label>
+              <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="updateImage(this, 'avatarImage')">
+            </div>
+            <p class="text-xs text-slate-400 mt-2 italic">*Bạn có thể bấm vào góc ảnh để tải lên ảnh chân dung mới</p>
+          </div>
+
+          <!-- Thông tin chi tiết -->
+          <div class="lg:col-span-7 space-y-6">
+            <div>
+              <h3 class="text-3xl font-extrabold text-slate-900">NGUYỄN NGỌC HOÀI THƯƠNG</h3>
+              <div class="flex flex-wrap gap-3 mt-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-50 text-scienceBlue-700 text-sm font-semibold border border-sky-200">
+                  🎓 Sinh viên Sư phạm Khoa học Tự nhiên
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-natureGreen-700 text-sm font-semibold border border-emerald-200">
+                  🏫 Trường Đại học Sư phạm Thành phố Hồ Chí Minh
+                </span>
+              </div>
+            </div>
+
+            <div class="p-6 bg-slate-50/80 rounded-2xl border border-slate-200/80 leading-relaxed text-slate-700 text-base sm:text-lg">
+              “Mình là người yêu thích sự khám phá và luôn tò mò trước những điều mới mẻ, đặc biệt là khoa học và công nghệ. Mình thích vận động, tìm hiểu thế giới tự nhiên và dành một tình yêu đặc biệt cho những người bạn bốn chân.”
+            </div>
+
+            <!-- 6. TÍNH CÁCH – PERSONALITY -->
+            <div>
+              <h4 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">Tính cách đặc trưng</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-sky-300 hover:shadow-md transition-all">
+                  <div class="font-bold text-slate-800 flex items-center gap-2 text-base">
+                    <span>😊</span> Hòa đồng
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 mt-1">Mình thích kết nối và chia sẻ với mọi người.</p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all">
+                  <div class="font-bold text-slate-800 flex items-center gap-2 text-base">
+                    <span>🌿</span> Trầm ổn
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 mt-1">Bình tĩnh quan sát và suy nghĩ trước các vấn đề.</p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-rose-300 hover:shadow-md transition-all">
+                  <div class="font-bold text-slate-800 flex items-center gap-2 text-base">
+                    <span>❤️</span> Đồng cảm
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 mt-1">Biết lắng nghe và quan tâm đến cảm xúc của người khác.</p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-amber-300 hover:shadow-md transition-all">
+                  <div class="font-bold text-slate-800 flex items-center gap-2 text-base">
+                    <span>🎯</span> Quyết đoán
+                  </div>
+                  <p class="text-xs sm:text-sm text-slate-600 mt-1">Sẵn sàng đưa ra lựa chọn khi cần thiết.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. SỞ THÍCH – MY INTERESTS -->
+    <section class="py-20 px-4 bg-slate-50/70 border-y border-slate-200/60">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-extrabold font-heading text-slate-900">SỞ THÍCH & ĐAM MÊ</h2>
+          <p class="text-slate-600 text-sm mt-1">Những điều tiếp thêm năng lượng và cảm hứng học tập mỗi ngày</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <!-- Cầu lông -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all flex flex-col justify-between">
+            <div>
+              <div class="text-3xl mb-3">🏸</div>
+              <h3 class="font-bold text-slate-800 text-lg mb-2">CẦU LÔNG</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Một trong những hoạt động mình yêu thích để vận động, thư giãn và nạp lại năng lượng.</p>
+            </div>
+            <span class="mt-4 text-[11px] font-bold text-sky-600 uppercase tracking-wide">Vận động thể thao</span>
+          </div>
+
+          <!-- Cún con -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all flex flex-col justify-between">
+            <div>
+              <div class="text-3xl mb-3">🐶</div>
+              <h3 class="font-bold text-slate-800 text-lg mb-2">CÚN CON</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Mình có tình yêu đặc biệt dành cho những người bạn bốn chân.</p>
+            </div>
+            <span class="mt-4 text-[11px] font-bold text-amber-600 uppercase tracking-wide">Tình yêu động vật</span>
+          </div>
+
+          <!-- Khám phá tự nhiên -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all flex flex-col justify-between">
+            <div>
+              <div class="text-3xl mb-3">🌿</div>
+              <h3 class="font-bold text-slate-800 text-lg mb-2">KHÁM PHÁ TỰ NHIÊN</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Mình thích quan sát và tìm hiểu những điều thú vị trong thế giới tự nhiên.</p>
+            </div>
+            <span class="mt-4 text-[11px] font-bold text-emerald-600 uppercase tracking-wide">Thế giới sinh vật</span>
+          </div>
+
+          <!-- Công nghệ -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all flex flex-col justify-between">
+            <div>
+              <div class="text-3xl mb-3">💻</div>
+              <h3 class="font-bold text-slate-800 text-lg mb-2">CÔNG NGHỆ</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Mình thích khám phá các công nghệ, AI và những công cụ mới có thể hỗ trợ học tập và sáng tạo.</p>
+            </div>
+            <span class="mt-4 text-[11px] font-bold text-indigo-600 uppercase tracking-wide">AI & Chuyển đổi số</span>
+          </div>
+
+          <!-- Khoa học -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all flex flex-col justify-between">
+            <div>
+              <div class="text-3xl mb-3">🔬</div>
+              <h3 class="font-bold text-slate-800 text-lg mb-2">KHOA HỌC</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Mình luôn tò mò với câu hỏi “Tại sao?” và thích tìm kiếm những lời giải thích có cơ sở khoa học.</p>
+            </div>
+            <span class="mt-4 text-[11px] font-bold text-teal-600 uppercase tracking-wide">Tư duy logic</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. KỸ NĂNG & 9. HÀNH TRÌNH HỌC TẬP -->
+    <section class="py-20 px-4 bg-white">
+      <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- Cột Kỹ năng (Không có phần trăm số ảo) -->
+        <div class="lg:col-span-6 space-y-6">
+          <div>
+            <span class="text-xs font-bold text-scienceBlue-600 uppercase tracking-wider">Năng lực bản thân</span>
+            <h2 class="text-3xl font-extrabold font-heading text-slate-900 mt-1">KỸ NĂNG CỦA MÌNH</h2>
+          </div>
+
+          <div class="space-y-3">
+            <div class="p-4 rounded-2xl bg-sky-50/60 border border-sky-100 flex items-center gap-4 hover:bg-sky-50 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl">💬</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">Giao tiếp</h4>
+                <p class="text-xs text-slate-500">Truyền đạt tự tin, chân thành và rành mạch</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-100 flex items-center gap-4 hover:bg-emerald-50 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl">🤝</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">Hợp tác và làm việc nhóm</h4>
+                <p class="text-xs text-slate-500">Biết lắng nghe, phối hợp và tương tác tích cực</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-100 flex items-center gap-4 hover:bg-teal-50 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl">🔎</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">Tìm kiếm và chọn lọc thông tin khoa học</h4>
+                <p class="text-xs text-slate-500">Tra cứu nguồn tài liệu chính thống và đánh giá dữ liệu</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-100 flex items-center gap-4 hover:bg-indigo-50 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl">🔬</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">Tư duy và khám phá khoa học</h4>
+                <p class="text-xs text-slate-500">Tư duy phản biện, giải thích hiện tượng tự nhiên</p>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-purple-50/60 border border-purple-100 flex items-center gap-4 hover:bg-purple-50 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl">💻</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">Tìm hiểu công nghệ mới</h4>
+                <p class="text-xs text-slate-500">Sẵn sàng tiếp cận AI, công cụ số ứng dụng vào giáo dục</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cột Hành trình học tập -->
+        <div class="lg:col-span-6 space-y-6">
+          <div>
+            <span class="text-xs font-bold text-natureGreen-600 uppercase tracking-wider">Con đường tri thức</span>
+            <h2 class="text-3xl font-extrabold font-heading text-slate-900 mt-1">HÀNH TRÌNH HỌC TẬP</h2>
+          </div>
+
+          <div class="bg-gradient-to-br from-scienceBlue-50/50 to-emerald-50/50 p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="p-3 bg-white rounded-2xl shadow-sm border border-slate-100 text-3xl">🎓</div>
+              <div>
+                <h3 class="text-xl font-bold text-slate-900">Trường Đại học Sư phạm Thành phố Hồ Chí Minh</h3>
+                <p class="text-scienceBlue-700 font-semibold mt-1">Ngành: Sư phạm Khoa học Tự nhiên</p>
+              </div>
+            </div>
+
+            <div class="space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed">
+              <p class="border-l-4 border-scienceBlue-500 pl-4 py-1 italic bg-white/60 rounded-r-xl">
+                “Hành trình đại học giúp mình vừa phát triển kiến thức Khoa học Tự nhiên, vừa từng bước hình thành những năng lực cần thiết của một người giáo viên.”
+              </p>
+              <p class="border-l-4 border-natureGreen-500 pl-4 py-1 italic bg-white/60 rounded-r-xl">
+                “Mình đặc biệt quan tâm đến việc kết hợp Khoa học – Công nghệ – Giáo dục để tạo nên những trải nghiệm học tập trực quan và thú vị.”
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. ĐIỂM MẠNH & ĐIỀU ĐANG CẢI THIỆN + 11. MỤC TIÊU -->
+    <section class="py-20 px-4 bg-slate-50/60 border-t border-slate-200/80">
+      <div class="max-w-6xl mx-auto space-y-16">
+        
+        <!-- Điểm mạnh & Điểm cải thiện -->
+        <div>
+          <div class="text-center mb-10">
+            <h2 class="text-3xl font-extrabold font-heading text-slate-900">ĐIỂM MẠNH & HOÀN THIỆN BẢN THÂN</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Điểm mạnh -->
+            <div class="bg-white p-8 rounded-3xl border border-sky-100 shadow-md">
+              <h3 class="text-2xl font-bold text-scienceBlue-700 flex items-center gap-2 mb-6">
+                <span>✨</span> Điểm mạnh
+              </h3>
+              <ul class="space-y-3.5">
+                <li class="flex items-center gap-3 text-slate-700 font-medium">
+                  <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-xs font-bold">✓</span>
+                  Giao tiếp
+                </li>
+                <li class="flex items-center gap-3 text-slate-700 font-medium">
+                  <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-xs font-bold">✓</span>
+                  Hợp tác
+                </li>
+                <li class="flex items-center gap-3 text-slate-700 font-medium">
+                  <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-xs font-bold">✓</span>
+                  Lắng nghe và đồng cảm
+                </li>
+                <li class="flex items-center gap-3 text-slate-700 font-medium">
+                  <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-xs font-bold">✓</span>
+                  Tìm kiếm và chọn lọc nội dung khoa học
+                </li>
+                <li class="flex items-center gap-3 text-slate-700 font-medium">
+                  <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center text-xs font-bold">✓</span>
+                  Chủ động khám phá những kiến thức mới
+                </li>
+              </ul>
+            </div>
+
+            <!-- Điều đang cải thiện -->
+            <div class="bg-white p-8 rounded-3xl border border-emerald-100 shadow-md flex flex-col justify-between">
+              <div>
+                <h3 class="text-2xl font-bold text-natureGreen-700 flex items-center gap-2 mb-4">
+                  <span>🌱</span> Điều mình đang cải thiện
+                </h3>
+                <h4 class="text-lg font-bold text-slate-800 mb-2">Quản lý thời gian</h4>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 italic">
+                  “Mình vẫn đang học cách sắp xếp thời gian hợp lý hơn giữa học tập, công việc, sở thích và nghỉ ngơi. Đây cũng là một trong những kỹ năng mình muốn từng bước hoàn thiện.”
+                </p>
+              </div>
+              <div class="mt-4 flex items-center gap-2 text-xs font-semibold text-natureGreen-700">
+                <span class="w-2 h-2 rounded-full bg-natureGreen-500"></span>
+                Tư duy tích cực và luôn hướng tới việc nâng cao kỷ luật bản thân.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11. MỤC TIÊU – MY GOALS -->
+        <div class="bg-gradient-to-r from-scienceBlue-700 to-emerald-700 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
+          <div class="relative z-10 max-w-3xl">
+            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-lg text-xs font-bold uppercase tracking-wider">Định hướng tương lai</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold font-heading mt-3 mb-6">MỤC TIÊU SỰ NGHIỆP</h2>
+            
+            <div class="space-y-4 text-base sm:text-lg leading-relaxed font-light">
+              <p class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20">
+                “Mình mong muốn trở thành một giáo viên Khoa học Tự nhiên có thể truyền tải kiến thức một cách gần gũi, đồng thời khơi gợi sự tò mò và niềm yêu thích khám phá ở học sinh.”
+              </p>
+              <p class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20">
+                “Trong tương lai, mình muốn tiếp tục phát triển kiến thức chuyên môn, kỹ năng sư phạm và khả năng ứng dụng khoa học, STEM và công nghệ vào giáo dục.”
+              </p>
+            </div>
+          </div>
+          <!-- Chi tiết đồ họa mờ góc -->
+          <div class="absolute -right-10 -bottom-10 opacity-10 text-[200px] pointer-events-none select-none">🔬</div>
+        </div>
+
+        <!-- 12. FUN FACTS -->
+        <div>
+          <div class="text-center mb-8">
+            <h2 class="text-2xl sm:text-3xl font-extrabold font-heading text-slate-800">✨ FUN FACTS VỀ MÌNH</h2>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 text-center hover:shadow-md transition-all">
+              <span class="text-2xl block mb-1">🏸</span>
+              <p class="text-xs text-slate-400 font-semibold">Môn thể thao yêu thích</p>
+              <p class="text-sm font-bold text-slate-800 mt-1">Cầu lông</p>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 text-center hover:shadow-md transition-all">
+              <span class="text-2xl block mb-1">🐶</span>
+              <p class="text-xs text-slate-400 font-semibold">Không thể cưỡng lại</p>
+              <p class="text-sm font-bold text-slate-800 mt-1">Những chú cún đáng yêu</p>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 text-center hover:shadow-md transition-all">
+              <span class="text-2xl block mb-1">🌿</span>
+              <p class="text-xs text-slate-400 font-semibold">Thích</p>
+              <p class="text-sm font-bold text-slate-800 mt-1">Khám phá thiên nhiên</p>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 text-center hover:shadow-md transition-all">
+              <span class="text-2xl block mb-1">🔬</span>
+              <p class="text-xs text-slate-400 font-semibold">Luôn tò mò về</p>
+              <p class="text-sm font-bold text-slate-800 mt-1">Khoa học</p>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 text-center hover:shadow-md transition-all">
+              <span class="text-2xl block mb-1">💻</span>
+              <p class="text-xs text-slate-400 font-semibold">Thường tìm hiểu</p>
+              <p class="text-sm font-bold text-slate-800 mt-1">Công nghệ mới</p>
+            </div>
+
+            <div class="p-4 bg-white rounded-2xl border border-slate-200 text-center hover:shadow-md transition-all">
+              <span class="text-2xl block mb-1">🎓</span>
+              <p class="text-xs text-slate-400 font-semibold">Đang theo đuổi</p>
+              <p class="text-sm font-bold text-slate-800 mt-1">Sư phạm KHTN</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 13. CONTACT & QR CODE GENERATOR ==================== -->
+    <section id="contact" class="py-24 px-4 bg-white border-t border-slate-200">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <span class="px-3.5 py-1 bg-emerald-100 text-natureGreen-700 text-xs font-bold rounded-full uppercase tracking-wider">Kết nối & Chia sẻ</span>
+          <h2 class="text-4xl font-extrabold font-heading text-slate-900 mt-2">LET'S CONNECT! 👋</h2>
+          <p class="text-slate-600 mt-3 max-w-xl mx-auto text-base">
+            “Cảm ơn bạn đã dành thời gian khám phá một chút về mình. Mình luôn sẵn sàng kết nối, chia sẻ và học hỏi những điều mới.”
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          
+          <!-- Thẻ liên hệ chính thức có QR Code thật -->
+          <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-200 space-y-6">
+            <h3 class="text-xl font-bold text-slate-800">Thông tin liên lạc</h3>
+
+            <!-- Facebook -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-5">
+              <div id="fb-qrcode" class="p-2 bg-white rounded-xl shadow border flex-shrink-0"></div>
+              <div class="text-center sm:text-left space-y-1">
+                <span class="text-xs font-bold uppercase tracking-wider text-blue-600">🌐 Facebook</span>
+                <p class="text-sm font-semibold text-slate-800">Nguyễn Ngọc Hoài Thương</p>
+                <a href="https://www.facebook.com/share/1CKadaMfhS/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="text-xs text-scienceBlue-600 hover:underline break-all block">
+                  facebook.com/share/1CKadaMfhS
+                </a>
+                <button onclick="downloadQR('fb-qrcode', 'Facebook_HoaiThuong_QR.png')" class="text-xs font-semibold text-slate-500 hover:text-slate-800 inline-flex items-center gap-1 mt-1">
+                  📥 Tải mã QR
+                </button>
+              </div>
+            </div>
+
+            <!-- Zalo (Placeholder vị trí chờ theo yêu cầu) -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center gap-5">
+              <div id="zalo-qrcode" class="p-2 bg-white rounded-xl shadow border flex-shrink-0 flex items-center justify-center w-[116px] h-[116px] text-xs text-slate-400 text-center bg-slate-50">
+                (Chờ nhập số/link Zalo)
+              </div>
+              <div class="text-center sm:text-left space-y-2 flex-1">
+                <span class="text-xs font-bold uppercase tracking-wider text-teal-600">📧 Zalo</span>
+                <p class="text-xs text-slate-500">Chưa cung cấp liên kết Zalo. Bạn có thể nhập bên dưới để tạo mã ngay:</p>
+                <div class="flex gap-2">
+                  <input type="text" id="customZaloLink" placeholder="Nhập SĐT hoặc link Zalo..." class="w-full text-xs px-3 py-2 border rounded-xl focus:outline-none focus:border-scienceBlue-500">
+                  <button onclick="generateZaloQR()" class="px-3 py-2 bg-scienceBlue-600 text-white text-xs font-bold rounded-xl whitespace-nowrap hover:bg-scienceBlue-700">Tạo QR</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BỘ CÔNG CỤ TẠO VÀ TẢI MÃ QR TÙY BIẾN (QR GENERATOR) -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-sky-100 shadow-lg space-y-5">
+            <div>
+              <div class="inline-flex items-center gap-1.5 text-xs font-bold text-scienceBlue-600 uppercase tracking-wider">
+                <span>⚡</span> Tính năng tương tác
+              </div>
+              <h3 class="text-xl font-bold text-slate-800 mt-1">Tạo mã QR tức thì</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">
+                Nhập bất kỳ đường link website, liên hệ cá nhân hoặc tài liệu giảng dạy nào để tạo mã QR có thể quét bằng điện thoại và tải về máy.
+              </p>
+            </div>
+
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Đường dẫn URL / Văn bản:</label>
+                <input type="text" id="customQrInput" value="https://www.facebook.com/share/1CKadaMfhS/?mibextid=wwXIfr" placeholder="https://..." class="w-full text-sm px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-scienceBlue-500">
+              </div>
+
+              <div class="flex gap-3">
+                <button onclick="generateCustomQR()" class="flex-1 py-3 bg-natureGreen-600 hover:bg-natureGreen-700 text-white font-bold text-sm rounded-xl transition-all shadow">
+                  Tạo mã QR
+                </button>
+                <button onclick="downloadQR('custom-qrcode-container', 'MyCustomQRCode.png')" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition-all flex items-center gap-1">
+                  📥 Tải về
+                </button>
+              </div>
+            </div>
+
+            <!-- Vùng hiển thị QR Generator -->
+            <div class="pt-4 flex flex-col items-center justify-center">
+              <div id="custom-qrcode-container" class="p-3 bg-white border border-slate-200 rounded-2xl shadow-inner min-h-[140px] flex items-center justify-center"></div>
+              <span class="text-[11px] text-slate-400 mt-2">Dùng camera điện thoại để quét kiểm tra trực tiếp</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 bg-slate-900 text-slate-400 text-center text-xs">
+      <div class="max-w-4xl mx-auto px-4 space-y-2">
+        <p class="font-medium text-slate-300">Nguyễn Ngọc Hoài Thương • Sư phạm Khoa học Tự nhiên • ĐH Sư phạm TP.HCM</p>
+        <p>“Tò mò để khám phá – Học hỏi để trưởng thành.”</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ==================== LOGIC JAVASCRIPT ==================== -->
+  <script>
+    /* DỮ LIỆU CÂU HỎI THỬ THÁCH 01 (Trắc nghiệm KHTN THCS) */
+    const game1Questions = [
+      {
+        topic: "Khoa học Trái Đất",
+        question: "Hành tinh nào gần Mặt Trời nhất trong Hệ Mặt Trời?",
+        options: ["Trái Đất", "Sao Hỏa", "Sao Thủy", "Sao Mộc"],
+        correct: 2 // C. Sao Thủy
+      },
+      {
+        topic: "Vật lí",
+        question: "Đơn vị đo cường độ dòng điện trong hệ đo lường quốc tế (SI) là gì?",
+        options: ["Vôn (V)", "Ampe (A)", "Ohm (Ω)", "Oát (W)"],
+        correct: 1 // B. Ampe
+      },
+      {
+        topic: "Hóa học",
+        question: "Khí nào chiếm tỉ lệ thể tích lớn nhất trong không khí ở tầng đối lưu?",
+        options: ["Khí Oxy (Oxygen)", "Khí Nitơ (Nitrogen)", "Khí Cacbonic (Carbon dioxide)", "Khí Hiđrô (Hydrogen)"],
+        correct: 1 // B. Khí Nitơ (~78%)
+      },
+      {
+        topic: "Sinh học",
+        question: "Bào quan nào được ví như 'nhà máy năng lượng' của tế bào nhân thực?",
+        options: ["Nhân tế bào", "Lục lạp", "Ti thể", "Không bào"],
+        correct: 2 // C. Ti thể
+      },
+      {
+        topic: "Vật lí - Sinh học",
+        question: "Hiện tượng cầu vồng xuất hiện sau cơn mưa là do hiện tượng quang học nào?",
+        options: ["Tán sắc ánh sáng", "Phản xạ toàn phần đơn thuần", "Giao thoa sóng", "Cộng hưởng âm"],
+        correct: 0 // A. Tán sắc ánh sáng
+      }
+    ];
+
+    let g1CurrentIndex = 0;
+    let g1Completed = false;
+
+    function renderGame1Question() {
+      const q = game1Questions[g1CurrentIndex];
+      document.getElementById('g1-progress-text').innerText = `Câu ${g1CurrentIndex + 1}/${game1Questions.length}`;
+      document.getElementById('g1-topic-badge').innerText = q.topic;
+      document.getElementById('g1-progress-bar').style.width = `${((g1CurrentIndex + 1) / game1Questions.length) * 100}%`;
+      document.getElementById('g1-question').innerText = q.question;
+
+      const optsContainer = document.getElementById('g1-options');
+      optsContainer.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200 hover:border-sky-400 bg-white hover:bg-sky-50/50 font-medium text-slate-800 transition-all flex items-center gap-3";
+        btn.innerHTML = `<span class="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-600 flex-shrink-0">${letters[idx]}</span> <span>${opt}</span>`;
+        btn.onclick = () => checkGame1Answer(idx, btn);
+        optsContainer.appendChild(btn);
+      });
+
+      const feedback = document.getElementById('g1-feedback');
+      feedback.className = "hidden p-4 rounded-xl text-center font-semibold text-sm transition-all duration-300";
+      feedback.innerText = "";
+    }
+
+    function checkGame1Answer(selectedIdx, btnElement) {
+      const q = game1Questions[g1CurrentIndex];
+      const feedback = document.getElementById('g1-feedback');
+      const allButtons = document.querySelectorAll('#g1-options button');
+
+      if (selectedIdx === q.correct) {
+        // Đúng
+        btnElement.classList.remove('border-slate-200', 'hover:border-sky-400', 'bg-white');
+        btnElement.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-800');
+        allButtons.forEach(b => b.disabled = true);
+
+        feedback.className = "p-4 rounded-xl text-center font-bold text-sm bg-emerald-100 text-emerald-800 block animate-fadeIn";
+        feedback.innerText = "Chính xác! 🎉 Rất xuất sắc!";
+
+        setTimeout(() => {
+          g1CurrentIndex++;
+          if (g1CurrentIndex < game1Questions.length) {
+            renderGame1Question();
+          } else {
+            // Hoàn thành Thử thách 1
+            g1Completed = true;
+            document.getElementById('g1-question-box').classList.add('hidden');
+            document.getElementById('g1-completed').classList.remove('hidden');
+            confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+          }
+        }, 1200);
+
+      } else {
+        // Sai
+        btnElement.classList.add('border-rose-400', 'bg-rose-50', 'text-rose-700');
+        feedback.className = "p-4 rounded-xl text-center font-semibold text-sm bg-rose-50 text-rose-700 border border-rose-200 block";
+        feedback.innerText = "Chưa chính xác, thử lại nhé!";
+        setTimeout(() => {
+          btnElement.classList.remove('border-rose-400', 'bg-rose-50', 'text-rose-700');
+        }, 1500);
+      }
+    }
+
+    /* DỮ LIỆU CÂU HỎI THỬ THÁCH 02 (Đúng / Sai) */
+    const game2Statements = [
+      {
+        statement: "“Thực vật cần ánh sáng để thực hiện quá trình quang hợp.”",
+        isTrue: true,
+        explanation: "Chính xác! Diệp lục trong lục lạp của lá cây hấp thụ năng lượng ánh sáng để tổng hợp chất hữu cơ từ nước và khí cacbonic."
+      },
+      {
+        statement: "“Nước tinh khiết sôi ở 50°C trong điều kiện áp suất khí quyển tiêu chuẩn.”",
+        isTrue: false,
+        explanation: "Chính xác! Ở áp suất khí quyển tiêu chuẩn (1 atm), nước tinh khiết sôi ở 100°C chứ không phải 50°C."
+      },
+      {
+        statement: "“Mặt Trăng tự phát ra ánh sáng.”",
+        isTrue: false,
+        explanation: "Chính xác! Mặt Trăng không tự phát quang mà phản chiếu ánh sáng từ Mặt Trời chiếu tới bề mặt của nó."
+      },
+      {
+        statement: "“Kim cương và than chì đều được cấu tạo từ các nguyên tử của cùng một nguyên tố Carbon.”",
+        isTrue: true,
+        explanation: "Đúng vậy! Cả hai là các dạng thù hình của nguyên tố Carbon, khác nhau ở cấu trúc liên kết không gian."
+      },
+      {
+        statement: "“Trọng lực của Trái Đất tác dụng lên vật càng xa tâm Trái Đất thì độ lớn lực càng tăng.”",
+        isTrue: false,
+        explanation: "Chính xác! Theo định luật vạn vật hấp dẫn, lực hút hấp dẫn tỉ lệ nghịch với bình phương khoảng cách, nên càng xa thì trọng lực càng giảm."
+      }
+    ];
+
+    let g2CurrentIndex = 0;
+    let g2Score = 0;
+    let g2Completed = false;
+
+    function renderGame2Question() {
+      const item = game2Statements[g2CurrentIndex];
+      document.getElementById('g2-progress-text').innerText = `Nhận định ${g2CurrentIndex + 1}/${game2Statements.length}`;
+      document.getElementById('g2-statement').innerText = item.statement;
+      document.getElementById('g2-explanation-card').classList.add('hidden');
+      document.getElementById('g2-buttons').classList.remove('hidden');
+    }
+
+    function handleGame2Answer(userAnswer) {
+      const item = game2Statements[g2CurrentIndex];
+      const isCorrect = (userAnswer === item.isTrue);
+
+      if (isCorrect) {
+        g2Score++;
+        document.getElementById('g2-score').innerText = g2Score;
+      }
+
+      document.getElementById('g2-buttons').classList.add('hidden');
+      const expCard = document.getElementById('g2-explanation-card');
+      const resultTag = document.getElementById('g2-result-tag');
+      const expText = document.getElementById('g2-explanation');
+
+      if (isCorrect) {
+        expCard.className = "p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm";
+        resultTag.innerText = "🎉 Bạn đã trả lời đúng!";
+      } else {
+        expCard.className = "p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm";
+        resultTag.innerText = "💡 Chưa chính xác rồi!";
+      }
+
+      expText.innerText = item.explanation;
+      expCard.classList.remove('hidden');
+    }
+
+    function nextGame2Question() {
+      g2CurrentIndex++;
+      if (g2CurrentIndex < game2Statements.length) {
+        renderGame2Question();
+      } else {
+        // Hoàn thành cả 2 thử thách
+        g2Completed = true;
+        document.getElementById('g2-content-box').classList.add('hidden');
+        document.getElementById('g2-completed').classList.remove('hidden');
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+      }
+    }
+
+    /* MỞ KHÓA HỒ SƠ SAU 2 TRÒ CHƠI */
+    function unlockPortfolio() {
+      const profile = document.getElementById('portfolioProfile');
+      const overlay = document.getElementById('lockedOverlay');
+      const navLink = document.getElementById('navAboutLink');
+
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        profile.classList.remove('profile-locked');
+        navLink.classList.remove('text-slate-400', 'cursor-not-allowed');
+        navLink.classList.add('hover:text-scienceBlue-600');
+        navLink.innerHTML = "Hồ sơ cá nhân ✨";
+
+        // Cuộn mượt đến phần Hồ sơ cá nhân
+        document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+
+        // Hiệu ứng pháo hoa rực rỡ chào đón
+        confetti({
+          particleCount: 120,
+          spread: 100,
+          origin: { y: 0.4 }
+        });
+      }, 500);
+    }
+
+    /* HÀM HỖ TRỢ TẢI VÀ ĐỔI ẢNH (BANNER & AVATAR) */
+    function updateImage(inputElement, targetImgId) {
+      if (inputElement.files && inputElement.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(targetImgId).src = e.target.result;
+        };
+        reader.readAsDataURL(inputElement.files[0]);
+      }
+    }
+
+    /* TẠO VÀ TẢI QR CODE */
+    let customQrInstance = null;
+
+    function initStaticQRs() {
+      // QR Facebook
+      new QRCode(document.getElementById("fb-qrcode"), {
+        text: "https://www.facebook.com/share/1CKadaMfhS/?mibextid=wwXIfr",
+        width: 100,
+        height: 100,
+        colorDark: "#0369a1",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      // Khởi tạo QR mẫu cho công cụ tùy biến
+      generateCustomQR();
+    }
+
+    function generateZaloQR() {
+      const val = document.getElementById('customZaloLink').value.trim();
+      const container = document.getElementById('zalo-qrcode');
+      if (!val) {
+        alert("Vui lòng nhập số điện thoại hoặc liên kết Zalo của bạn!");
+        return;
+      }
+      container.innerHTML = "";
+      new QRCode(container, {
+        text: val.startsWith('http') ? val : `https://zalo.me/${val}`,
+        width: 100,
+        height: 100,
+        colorDark: "#0d9488",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    function generateCustomQR() {
+      const inputVal = document.getElementById('customQrInput').value.trim() || window.location.href;
+      const container = document.getElementById('custom-qrcode-container');
+      container.innerHTML = "";
+      customQrInstance = new QRCode(container, {
+        text: inputVal,
+        width: 128,
+        height: 128,
+        colorDark: "#0f172a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    function downloadQR(containerId, fileName) {
+      const container = document.getElementById(containerId);
+      const img = container.querySelector('img');
+      const canvas = container.querySelector('canvas');
+
+      let dataUrl = "";
+      if (img && img.src && img.src.startsWith('data:image')) {
+        dataUrl = img.src;
+      } else if (canvas) {
+        dataUrl = canvas.toDataURL("image/png");
+      }
+
+      if (dataUrl) {
+        const downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl;
+        downloadLink.download = fileName;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      } else {
+        alert("Vui lòng tạo mã QR trước khi tải về!");
+      }
+    }
+
+    // Khởi chạy khi tài liệu sẵn sàng
+    window.addEventListener('DOMContentLoaded', () => {
+      renderGame1Question();
+      renderGame2Question();
+      initStaticQRs();
+    });
+  </script>
+</body>
+</html>
